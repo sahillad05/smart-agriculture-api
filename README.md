@@ -389,6 +389,55 @@ Recommendation Logic
 
 The system uses rule-based logic to detect nutrient deficiencies in soil and suggest an appropriate fertilizer.
 
+---
+
+## Plant Disease Detection Model
+
+The plant disease detection module uses a convolutional neural network built with PyTorch to classify plant diseases from leaf images.
+
+Dataset
+
+The dataset is organized using the following structure:
+
+data/plant_disease/dataset/train
+data/plant_disease/dataset/valid
+
+Each disease category is stored inside its own folder.
+
+Example
+
+train/Apple___Apple_scab
+train/Tomato___Early_blight
+
+Model Architecture
+
+Custom Convolutional Neural Network (CNN) implemented using PyTorch.
+
+Training Configuration
+
+Image Size: 128x128
+Batch Size: 16
+Epochs: 15
+Device: GPU (CUDA)
+
+Training Script
+
+ml_training/train_disease_model.py
+
+Model Output
+
+ml_models/disease_model.pth
+
+Checkpoint File
+
+ml_models/disease_checkpoint.pth
+
+The checkpoint file allows training to resume if the training process is interrupted.
+
+Validation Accuracy
+
+The trained model achieved approximately 94 percent validation accuracy on the dataset.
+
 
 ---
 
