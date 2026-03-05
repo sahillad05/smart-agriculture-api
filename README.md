@@ -351,15 +351,49 @@ These files are used by the FastAPI backend to perform yield prediction.
 
 The model performance is evaluated using Root Mean Squared Error (RMSE).
 
+---
 
+## Fertilizer Recommendation API
+
+The fertilizer recommendation API suggests the most suitable fertilizer based on soil nutrient composition and crop type.
+
+Endpoint
+
+POST /fertilizer-recommendation
+
+Input Parameters
+
+crop
+nitrogen
+phosphorus
+potassium
+soil_type
+
+Example Request
+
+{
+"crop": "Wheat",
+"nitrogen": 30,
+"phosphorus": 50,
+"potassium": 40,
+"soil_type": "Loamy"
+}
+
+Example Response
+
+{
+"recommended_fertilizer": "Urea"
+}
+
+Recommendation Logic
+
+The system uses rule-based logic to detect nutrient deficiencies in soil and suggest an appropriate fertilizer.
 
 
 ---
 
 Upcoming features:
 
-* Yield prediction model
-* Fertilizer recommendation system
 * Plant disease detection CNN
 * Docker deployment
 
