@@ -284,6 +284,78 @@ ml_models/crop_model.pkl
 
 ---
 
+## Crop Yield Prediction Model
+
+The crop yield prediction system estimates agricultural productivity based on environmental and regional factors.
+
+This model helps estimate the expected crop yield per hectare using historical agricultural data.
+
+### Dataset
+
+The dataset used for training contains the following columns:
+
+Area
+Item
+Year
+hg/ha_yield
+average_rain_fall_mm_per_year
+pesticides_tonnes
+avg_temp
+
+### Feature Engineering
+
+For model training, the dataset columns are processed as follows:
+
+Area → Encoded using LabelEncoder
+Item → Encoded using LabelEncoder
+
+Selected features:
+
+Area
+Crop
+Rainfall
+Pesticides
+Temperature
+
+Target variable:
+
+Yield (hg/ha_yield)
+
+### Machine Learning Model
+
+RandomForestRegressor from scikit-learn is used for regression.
+
+This model is well suited for tabular datasets and handles nonlinear relationships effectively.
+
+### Training Script
+
+The model is trained using the script:
+
+ml_training/train_yield_model.py
+
+Run the training script using:
+
+python ml_training/train_yield_model.py
+
+### Output Files
+
+After training, the following files are generated inside the `ml_models` directory:
+
+ml_models/yield_model.pkl
+ml_models/area_encoder.pkl
+ml_models/crop_encoder.pkl
+
+These files are used by the FastAPI backend to perform yield prediction.
+
+### Evaluation Metric
+
+The model performance is evaluated using Root Mean Squared Error (RMSE).
+
+
+
+
+---
+
 Upcoming features:
 
 * Yield prediction model
