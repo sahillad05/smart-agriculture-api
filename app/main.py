@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from routes.crop_routes import router as crop_router
+from routes.yield_routes import router as yield_router
 
 app = FastAPI(
     title="Smart Agriculture Recommendation API",
@@ -9,8 +10,11 @@ app = FastAPI(
 )
 
 app.include_router(crop_router)
+app.include_router(yield_router)
 
 
 @app.get("/")
 def root():
-    return {"message": "Smart Agriculture Recommendation API is running"}
+    return {
+        "message": "Smart Agriculture Recommendation API is running"
+    }
