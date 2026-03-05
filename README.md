@@ -236,9 +236,56 @@ ml_models/crop_model.pkl
 ✔ FastAPI server running
 ✔ Crop recommendation ML model trained
 
+---
+
+## Crop Recommendation API
+
+The crop recommendation API predicts the most suitable crop based on soil nutrients and environmental conditions.
+
+Endpoint
+
+POST /crop-recommendation
+
+Input Parameters
+
+* nitrogen
+* phosphorus
+* potassium
+* temperature
+* humidity
+* ph
+* rainfall
+
+Example Request
+
+{
+"nitrogen": 90,
+"phosphorus": 42,
+"potassium": 43,
+"temperature": 20,
+"humidity": 82,
+"ph": 6.5,
+"rainfall": 202
+}
+
+Example Response
+
+{
+"recommended_crop": "rice"
+}
+
+Model Used
+
+RandomForestClassifier trained on the Crop Recommendation Dataset.
+
+The model is stored at:
+
+ml_models/crop_model.pkl
+
+---
+
 Upcoming features:
 
-* Crop recommendation API endpoint
 * Yield prediction model
 * Fertilizer recommendation system
 * Plant disease detection CNN
