@@ -496,8 +496,32 @@ Tomato___healthy
 
 ---
 
-Upcoming features:
-* Docker deployment
+## Deployment
+
+The Smart Agriculture Recommendation API can be deployed using Docker.
+
+Docker Build
+
+docker build -t smart-agriculture-api .
+
+Docker Run
+
+docker run -p 8000:8000 smart-agriculture-api
+
+Access API
+
+http://localhost:8000/docs
+
+Cloud Deployment
+
+The API can be deployed on cloud platforms such as Render.
+
+Steps
+
+1. Push project to GitHub
+2. Connect repository to Render
+3. Deploy as a Web Service using Docker
+4. Access API documentation via /docs endpoint
 
 ---
 
