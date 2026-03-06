@@ -22,3 +22,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+ml_models/*.pth
+ml_models/*.pt
