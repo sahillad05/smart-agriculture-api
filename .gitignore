@@ -12,9 +12,8 @@ venv/
 data/
 
 # ML Models
-*.pkl
-*.h5
-*.pt
+ml_models/*.pth
+ml_models/*.pt
 
 # OS
 .DS_Store
@@ -23,5 +22,3 @@ Thumbs.db
 # Logs
 *.log
 
-ml_models/*.pth
-ml_models/*.pt
