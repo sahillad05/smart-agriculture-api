@@ -525,6 +525,27 @@ Steps
 
 ---
 
+## Model Hosting
+
+Machine learning models are hosted externally on Hugging Face.
+
+During application startup the API automatically downloads the required models into the ml_models directory.
+
+Models Hosted
+
+crop_model.pkl
+yield_model.pkl
+disease_model.pth
+
+Platform
+
+Hugging Face Model Hub
+
+This approach keeps the GitHub repository lightweight while allowing the API to load trained models during deployment.
+
+
+---
+
 # 👨‍💻 Author
 
 Sahil Lad
