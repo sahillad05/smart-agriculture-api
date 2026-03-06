@@ -441,9 +441,62 @@ The trained model achieved approximately 94 percent validation accuracy on the d
 
 ---
 
-Upcoming features:
+## Plant Disease Detection API
 
-* Plant disease detection CNN
+The disease detection API allows users to upload a plant leaf image and receive a predicted disease class using the trained CNN model.
+
+Endpoint
+
+POST /disease-detection
+
+Input
+
+Multipart image upload of a plant leaf.
+
+Example Request
+
+Upload an image file using Swagger UI or an HTTP client.
+
+Example Response
+
+{
+"disease": "Tomato___Early_blight",
+"confidence": 0.94
+}
+
+Model Used
+
+Custom Convolutional Neural Network trained using PyTorch.
+
+Image Processing
+
+Images are resized to 128x128 and converted to tensors before being passed into the CNN model.
+
+Model File
+
+ml_models/disease_model.pth
+
+Supported Classes
+
+Apple___Apple_scab
+Apple___Black_rot
+Apple___healthy
+Corn_(maize)__*Northern_Leaf_Blight
+Corn*(maize)___healthy
+Potato___Early_blight
+Potato___Late_blight
+Potato___healthy
+Tomato___Early_blight
+Tomato___Late_blight
+Tomato___Septoria_leaf_spot
+Tomato___Target_Spot
+Tomato___Tomato_Yellow_Leaf_Curl_Virus
+Tomato___healthy
+
+
+---
+
+Upcoming features:
 * Docker deployment
 
 ---
