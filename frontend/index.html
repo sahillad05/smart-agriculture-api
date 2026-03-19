@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Agriculture AI</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- OpenCV.js -->
+    <script async src="https://docs.opencv.org/4.8.0/opencv.js" type="text/javascript" onload="window.cvReady = true;"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fa-solid fa-leaf logo-icon"></i>
+                <span>Smart Agriculture AI</span>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-toggle" id="mobile-toggle">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item active" data-target="crop-section">
+                    <i class="fa-solid fa-seedling"></i> Crop Recommendation
+                </li>
+                <li class="nav-item" data-target="yield-section">
+                    <i class="fa-solid fa-chart-line"></i> Yield Prediction
+                </li>
+                <li class="nav-item" data-target="fertilizer-section">
+                    <i class="fa-solid fa-vial"></i> Fertilizer
+                </li>
+                <li class="nav-item" data-target="disease-section">
+                    <i class="fa-solid fa-bug"></i> Disease Detection
+                </li>
+            </ul>
+
+            <button class="dark-mode-toggle" id="dark-mode-toggle" aria-label="Toggle Dark Mode">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-container">
+        <!-- Toast Notifications -->
+        <div id="toast-container" class="toast-container"></div>
+
+        <!-- Section 1: Crop Recommendation -->
+        <section id="crop-section" class="tab-section active">
+            <div class="card fade-in">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-seedling"></i> Crop Recommendation</h2>
+                    <p>Enter soil nutrients and environmental parameters for optimal crop suggestions.</p>
+                </div>
+                <div class="card-body">
+                    <form id="crop-form" class="ai-form">
+                        <div class="form-grid">
+                            <div class="input-group">
+                                <label for="crop-n">Nitrogen</label>
+                                <input type="number" id="crop-n" name="nitrogen" placeholder="e.g., 90" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="crop-p">Phosphorus</label>
+                                <input type="number" id="crop-p" name="phosphorus" placeholder="e.g., 42" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="crop-k">Potassium</label>
+                                <input type="number" id="crop-k" name="potassium" placeholder="e.g., 43" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="crop-temp">Temperature (°C)</label>
+                                <input type="number" step="0.1" id="crop-temp" name="temperature" placeholder="e.g., 20.8" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="crop-humidity">Humidity (%)</label>
+                                <input type="number" step="0.1" id="crop-humidity" name="humidity" placeholder="e.g., 82.0" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="crop-ph">pH Level</label>
+                                <input type="number" step="0.1" id="crop-ph" name="ph" placeholder="e.g., 6.5" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="crop-rainfall">Rainfall (mm)</label>
+                                <input type="number" step="0.1" id="crop-rainfall" name="rainfall" placeholder="e.g., 202.9" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="crop-btn">
+                            <span>Get Recommendation</span>
+                            <div class="spinner" id="crop-spinner"></div>
+                        </button>
+                    </form>
+
+                    <!-- Output Box -->
+                    <div id="crop-result" class="result-box hidden">
+                        <div class="result-icon"><i class="fa-solid fa-check-circle"></i></div>
+                        <div class="result-content">
+                            <h3>Recommended Crop</h3>
+                            <p id="crop-output-text"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Yield Prediction -->
+        <section id="yield-section" class="tab-section hidden">
+            <div class="card fade-in">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-chart-line"></i> Yield Prediction</h2>
+                    <p>Estimate the expected yield based on area and historical factors.</p>
+                </div>
+                <div class="card-body">
+                    <form id="yield-form" class="ai-form">
+                        <div class="form-grid">
+                            <div class="input-group">
+                                <label for="yield-area">Area (Location)</label>
+                                <select id="yield-area" name="area" required>
+                                    <option value="" disabled selected>Select Area</option>
+                                    <option value="Albania">Albania</option><option value="Algeria">Algeria</option><option value="Angola">Angola</option><option value="Argentina">Argentina</option><option value="Armenia">Armenia</option><option value="Australia">Australia</option><option value="Austria">Austria</option><option value="Azerbaijan">Azerbaijan</option><option value="Bahamas">Bahamas</option><option value="Bahrain">Bahrain</option><option value="Bangladesh">Bangladesh</option><option value="Belarus">Belarus</option><option value="Belgium">Belgium</option><option value="Botswana">Botswana</option><option value="Brazil">Brazil</option><option value="Bulgaria">Bulgaria</option><option value="Burkina Faso">Burkina Faso</option><option value="Burundi">Burundi</option><option value="Cameroon">Cameroon</option><option value="Canada">Canada</option><option value="Central African Republic">Central African Republic</option><option value="Chile">Chile</option><option value="Colombia">Colombia</option><option value="Croatia">Croatia</option><option value="Denmark">Denmark</option><option value="Dominican Republic">Dominican Republic</option><option value="Ecuador">Ecuador</option><option value="Egypt">Egypt</option><option value="El Salvador">El Salvador</option><option value="Eritrea">Eritrea</option><option value="Estonia">Estonia</option><option value="Finland">Finland</option><option value="France">France</option><option value="Germany">Germany</option><option value="Ghana">Ghana</option><option value="Greece">Greece</option><option value="Guatemala">Guatemala</option><option value="Guinea">Guinea</option><option value="Guyana">Guyana</option><option value="Haiti">Haiti</option><option value="Honduras">Honduras</option><option value="Hungary">Hungary</option><option value="India">India</option><option value="Indonesia">Indonesia</option><option value="Iraq">Iraq</option><option value="Ireland">Ireland</option><option value="Italy">Italy</option><option value="Jamaica">Jamaica</option><option value="Japan">Japan</option><option value="Kazakhstan">Kazakhstan</option><option value="Kenya">Kenya</option><option value="Latvia">Latvia</option><option value="Lebanon">Lebanon</option><option value="Lesotho">Lesotho</option><option value="Libya">Libya</option><option value="Lithuania">Lithuania</option><option value="Madagascar">Madagascar</option><option value="Malawi">Malawi</option><option value="Malaysia">Malaysia</option><option value="Mali">Mali</option><option value="Mauritania">Mauritania</option><option value="Mauritius">Mauritius</option><option value="Mexico">Mexico</option><option value="Montenegro">Montenegro</option><option value="Morocco">Morocco</option><option value="Mozambique">Mozambique</option><option value="Namibia">Namibia</option><option value="Nepal">Nepal</option><option value="Netherlands">Netherlands</option><option value="New Zealand">New Zealand</option><option value="Nicaragua">Nicaragua</option><option value="Niger">Niger</option><option value="Norway">Norway</option><option value="Pakistan">Pakistan</option><option value="Papua New Guinea">Papua New Guinea</option><option value="Peru">Peru</option><option value="Poland">Poland</option><option value="Portugal">Portugal</option><option value="Qatar">Qatar</option><option value="Romania">Romania</option><option value="Rwanda">Rwanda</option><option value="Saudi Arabia">Saudi Arabia</option><option value="Senegal">Senegal</option><option value="Slovenia">Slovenia</option><option value="South Africa">South Africa</option><option value="Spain">Spain</option><option value="Sri Lanka">Sri Lanka</option><option value="Sudan">Sudan</option><option value="Suriname">Suriname</option><option value="Sweden">Sweden</option><option value="Switzerland">Switzerland</option><option value="Tajikistan">Tajikistan</option><option value="Thailand">Thailand</option><option value="Tunisia">Tunisia</option><option value="Turkey">Turkey</option><option value="Uganda">Uganda</option><option value="Ukraine">Ukraine</option><option value="United Kingdom">United Kingdom</option><option value="Uruguay">Uruguay</option><option value="Zambia">Zambia</option><option value="Zimbabwe">Zimbabwe</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="yield-crop">Crop Name</label>
+                                <select id="yield-crop" name="crop" required>
+                                    <option value="" disabled selected>Select Crop</option>
+                                    <option value="Cassava">Cassava</option><option value="Maize">Maize</option><option value="Plantains and others">Plantains and others</option><option value="Potatoes">Potatoes</option><option value="Rice, paddy">Rice, paddy</option><option value="Sorghum">Sorghum</option><option value="Soybeans">Soybeans</option><option value="Sweet potatoes">Sweet potatoes</option><option value="Wheat">Wheat</option><option value="Yams">Yams</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="yield-rainfall">Rainfall (mm)</label>
+                                <input type="number" step="0.1" id="yield-rainfall" name="rainfall" placeholder="e.g., 120" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="yield-pesticides">Pesticides (tonnes)</label>
+                                <input type="number" step="0.1" id="yield-pesticides" name="pesticides" placeholder="e.g., 40" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="yield-temp">Temperature (°C)</label>
+                                <input type="number" step="0.1" id="yield-temp" name="temperature" placeholder="e.g., 25.5" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="yield-btn">
+                            <span>Predict Yield</span>
+                            <div class="spinner" id="yield-spinner"></div>
+                        </button>
+                    </form>
+
+                    <!-- Output Box -->
+                    <div id="yield-result" class="result-box hidden">
+                        <div class="result-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                        <div class="result-content">
+                            <h3>Predicted Yield</h3>
+                            <p id="yield-output-text"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Fertilizer Recommendation -->
+        <section id="fertilizer-section" class="tab-section hidden">
+            <div class="card fade-in">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-vial"></i> Fertilizer Recommendation</h2>
+                    <p>Find the best fertilizer for your soil condition and crop type.</p>
+                </div>
+                <div class="card-body">
+                    <form id="fertilizer-form" class="ai-form">
+                        <div class="form-grid">
+                            <div class="input-group">
+                                <label for="fert-crop">Crop Name</label>
+                                <select id="fert-crop" name="crop" required>
+                                    <option value="" disabled selected>Select Crop</option>
+                                    <option value="Cassava">Cassava</option><option value="Maize">Maize</option><option value="Plantains and others">Plantains and others</option><option value="Potatoes">Potatoes</option><option value="Rice, paddy">Rice, paddy</option><option value="Sorghum">Sorghum</option><option value="Soybeans">Soybeans</option><option value="Sweet potatoes">Sweet potatoes</option><option value="Wheat">Wheat</option><option value="Yams">Yams</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label for="fert-n">Nitrogen</label>
+                                <input type="number" id="fert-n" name="nitrogen" placeholder="e.g., 37" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="fert-p">Phosphorus</label>
+                                <input type="number" id="fert-p" name="phosphorus" placeholder="e.g., 0" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="fert-k">Potassium</label>
+                                <input type="number" id="fert-k" name="potassium" placeholder="e.g., 0" required>
+                            </div>
+                            <div class="input-group full-width">
+                                <label for="fert-soil">Soil Type</label>
+                                <select id="fert-soil" name="soil_type" required>
+                                    <option value="" disabled selected>Select Soil Type</option>
+                                    <option value="Sandy">Sandy</option>
+                                    <option value="Loamy">Loamy</option>
+                                    <option value="Black">Black</option>
+                                    <option value="Red">Red</option>
+                                    <option value="Clayey">Clayey</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="fert-btn">
+                            <span>Recommend Fertilizer</span>
+                            <div class="spinner" id="fert-spinner"></div>
+                        </button>
+                    </form>
+
+                    <!-- Output Box -->
+                    <div id="fert-result" class="result-box hidden">
+                        <div class="result-icon"><i class="fa-solid fa-flask"></i></div>
+                        <div class="result-content">
+                            <h3>Recommended Fertilizer</h3>
+                            <p id="fert-output-text"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Disease Detection -->
+        <section id="disease-section" class="tab-section hidden">
+            <div class="card fade-in">
+                <div class="card-header highlight">
+                    <h2><i class="fa-solid fa-camera"></i> Live Disease Detection</h2>
+                    <p>Scan your plant leaves using your camera to identify diseases instantly in real-time.</p>
+                </div>
+                <div class="card-body">
+                    <div class="camera-container" style="position: relative;">
+                        <!-- Stage 1 CV Status -->
+                        <div id="cv-status" class="cv-status-badge">
+                            <i class="fa-solid fa-spinner fa-spin" id="cv-loading-icon"></i>
+                            <span id="cv-status-text">Waiting for camera...</span>
+                        </div>
+
+                        <!-- Video Stream -->
+                        <div class="video-wrapper" id="video-wrapper" style="position: relative; width: 100%; height: 100%;">
+                            <video id="camera-stream" autoplay playsinline></video>
+                            
+                            <!-- OpenCV Overlay Canvas -->
+                            <canvas id="cv-overlay" class="cv-overlay-canvas"></canvas>
+                            
+                            <!-- Live Results Overlay on Video -->
+                            <div id="live-result-overlay" class="hidden" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px; background: rgba(0,0,0,0.7); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10;">
+                                <h3 id="overlay-disease-name" style="color: #4CAF50; margin-bottom: 5px; font-size: 1.2rem; font-weight: bold; text-align: center;">Healthy</h3>
+                                <div class="confidence-bar-container" style="width: 80%; margin: 0; color: #fff; font-size: 0.8rem; text-align: center;">
+                                    <span>Confidence: <span id="overlay-confidence-text">98%</span></span>
+                                    <div class="confidence-bar" style="background-color: rgba(255,255,255,0.3); height: 6px;">
+                                        <div class="confidence-fill" id="overlay-confidence-fill" style="width: 98%; background-color: #4CAF50;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Hidden Canvas for Blob Extraction -->
+                        <canvas id="canvas" class="hidden"></canvas>
+                    </div>
+
+                    <div class="camera-actions" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                        <select id="camera-select" class="form-control hidden" style="width: 100%; max-width: 250px; background-color: var(--card-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 10px; border-radius: 8px;">
+                            <option value="">Loading cameras...</option>
+                        </select>
+                        <button type="button" class="btn btn-secondary" id="start-camera-btn" style="width: 100%; max-width: 250px;">
+                            <i class="fa-solid fa-video"></i> Start Camera
+                        </button>
+                        <button type="button" class="btn btn-success hidden" id="start-live-btn" style="width: 100%; max-width: 250px;">
+                            <span><i class="fa-solid fa-microscope"></i> Start Live Scan</span>
+                        </button>
+                        <button type="button" class="btn btn-primary hidden" id="stop-live-btn" style="width: 100%; max-width: 250px; background-color: #F44336;">
+                            <span><i class="fa-solid fa-stop-circle"></i> Stop Live Scan</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -233,8 +233,42 @@ ml_models/crop_model.pkl
 # Current Development Status
 
 ✔ Project setup completed
-✔ FastAPI server running
-✔ Crop recommendation ML model trained
+✔ FastAPI server running with CORS enabled
+✔ All Machine Learning models trained and evaluated
+✔ Frontend UI with Dark Mode and API Integration
+✔ OpenCV.js Frontend Computer Vision Live Leaf Tracking
+✔ DroidCam Multi-Camera Support
+
+---
+
+## 📷 DroidCam & Frontend CV Detection
+
+The frontend now features a heavily optimized **Stage 1 Computer Vision pipeline** using `OpenCV.js`. 
+Before hitting the API, it tracks leaf contours in real-time, calculates surface area, and dynamically draws bounding outlines over the video feed. To preserve backend server stability, API calls are debounced and only trigger when a leaf is positively recognized.
+
+Because laptop webcams are often poor for macro-focus leaf scans, the UI dynamically enumerates video devices and allows hot-swapping to external cameras. 
+**We highly recommend using DroidCam:**
+1. Install DroidCam on your phone and PC.
+2. Link them over Wi-Fi.
+3. Select "DroidCam Source" from the frontend UI dropdown to stream 1080p high-fidelity mobile video straight into the OpenCV tracking loop!
+
+---
+
+## 📊 Evaluation Suite
+
+To independently verify the performance of the machine learning models, an `evaluation/` directory has been created. 
+You can run these scripts from the project root:
+
+```bash
+# Evaluate Crop Recommendation Model (Accuracy & Classification Report)
+python evaluation/eval_crop.py
+
+# Evaluate Yield Prediction Model (RMSE)
+python evaluation/eval_yield.py
+
+# Evaluate Plant Disease Model (CNN Validation Accuracy)
+python evaluation/eval_disease.py
+```
 
 ---
 

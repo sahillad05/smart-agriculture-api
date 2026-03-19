@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from torchvision import transforms
 from PIL import Image
+import numpy as np
 
 MODEL_PATH = "ml_models/disease_model.pth"
 
@@ -75,11 +76,28 @@ transform = transforms.Compose([
 
 def predict_disease(image):
 
-    image = transform(image).unsqueeze(0).to(device)
+    # Heuristic Check: Ensure image actually contains a leaf
+    # Convert PIL Image to HSV to check for plant colors
+    img_hsv = image.convert("HSV")
+    img_np = np.array(img_hsv)
+    
+    h = img_np[:, :, 0]
+    s = img_np[:, :, 1]
+    v = img_np[:, :, 2]
+    
+    # In PIL's HSV, H is 0-255. Green is ~85, Yellow is ~42.
+    # We look for H between 35 and 105 (greenish), with higher saturation to avoid pale walls.
+    mask = (h >= 35) & (h <= 105) & (s >= 50) & (v >= 40)
+    plant_ratio = np.mean(mask)
+
+    if plant_ratio < 0.05:  # Require at least 5% of the image to be distinctly plant-colored
+        return "No leaf detected", 0.0
+
+    image_tensor = transform(image).unsqueeze(0).to(device)
 
     with torch.no_grad():
 
-        outputs = model(image)
+        outputs = model(image_tensor)
 
         probabilities = torch.softmax(outputs, dim=1)
 
